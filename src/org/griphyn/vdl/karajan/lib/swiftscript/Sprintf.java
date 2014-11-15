@@ -18,6 +18,8 @@
 package org.griphyn.vdl.karajan.lib.swiftscript;
 
 import java.util.Arrays;
+import java.lang.*;
+import java.util.*;
 
 import k.rt.Channel;
 import k.rt.ExecutionException;
@@ -100,8 +102,21 @@ public class Sprintf extends SwiftFunction {
     /** 
        This method can be targeted as a helper function 
        (by @sprintf(), etc.)
-     */
+     */ 
     public static void format(String spec, Channel<AbstractDataNode> vars, StringBuilder output) {
+        int arg = 0;
+        int n = vars.size();
+        
+        Object[] param = new Object[n];
+        while (arg < n) {
+            param[arg] = vars.get(arg).getValue();
+            arg++;
+        }
+        output.append(String.format(spec, param));
+    }
+    
+    /*public static void format(String spec, Channel<AbstractDataNode> vars, StringBuilder output) {
+       // logger.warn(vars.get(0).getValue());  added
         int i = 0; 
         int arg = 0; 
         while (i < spec.length()) {
@@ -119,13 +134,14 @@ public class Sprintf extends SwiftFunction {
             }
             i++;
         }
-    }
-       
+    } 
+    
     private static int append(char c, int arg, Channel<AbstractDataNode> vars, StringBuilder output) {
         if (c == '%') {
             output.append('%');
             return arg;
         }
+        
         if (arg >= vars.size()) {
             throw new IllegalArgumentException("tracef(): too many specifiers!");
         }
@@ -241,12 +257,14 @@ public class Sprintf extends SwiftFunction {
     
     private static void append_s(DSHandle arg, StringBuilder output) {
         output.append(String.valueOf(arg.getValue()));
-    }
+    } */
     
     /**      
      * @param i Only used for error messages
      * @param spec Only used for error messages
      */
+    
+    /*
     private static void escape(int i, String spec, 
     		                   char c, StringBuilder output) 
     throws ExecutionException {
@@ -264,13 +282,14 @@ public class Sprintf extends SwiftFunction {
             		    "(\\" + c + ")\n" + 
             		    "\t in " + spec + " character: " + i);
         }
-    }
+    } */
     
     /**
      * Return String containing variable name and type of a given DSHandle
      */
+    /*
     private static String dshandleDescription(DSHandle dshandle) {
         String variableName = (dshandle.getRoot().toString().split(":")[0]);
         return "Variable \"" + variableName + "\" is a " + dshandle.getType();
-    }
-}
+    } */
+} 
