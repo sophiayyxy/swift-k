@@ -110,13 +110,25 @@ public class Sprintf extends SwiftFunction {
         Object[] param = new Object[n];
         while (arg < n) {
             param[arg] = vars.get(arg).getValue();
+            if (param[arg] instanceof String) {
+                String str = (String)param[arg];
+                if (str.contains("<FILE>")) {
+                    try { 
+                        vars.get(arg).getRoot();
+                    }
+                    catch (Exception e) {
+                        arg++;
+                        continue;
+                    }
+                    throw new IllegalArgumentException("type file does not match a string specifier!"); 
+                }
+            }
             arg++;
         }
         output.append(String.format(spec, param));
     }
     
     /*public static void format(String spec, Channel<AbstractDataNode> vars, StringBuilder output) {
-       // logger.warn(vars.get(0).getValue());  added
         int i = 0; 
         int arg = 0; 
         while (i < spec.length()) {
